@@ -19,7 +19,7 @@ $(document).ready(() => {
         let birthday = birthdayCorrection(data.dob);
         //build the list items and the modal window divs
         let employeeList = `<li class="employee"><a data-modal-open="${username}" href="#"><div class="images"><img src="${image}" alt="profile image"></div><div class="content"><h3 class="capitalize">${name}</h3><p>${email}</p><p class="capitalize">${city}</p></div></a></li>`;
-        let employeeModal = `<div class="modal" data-modal="${username}"><div class="modal-content"><a class="modal-close" data-modal-close="${username}" href="#">x</a><img src="${image}" alt="profile image"><h3 class="capitalize">${name}</h3><p>${email}</p><p class="capitalize">${city}</p><div class="line-break"></div><p>${username}</p><p>${cell}</p><p class="capitalize">${fullAddress}</p><p>${birthday}</p></div></div>`;
+        let employeeModal = `<div class="modal" data-modal="${username}"><div class="modal-content"><a class="modal-close" data-modal-close="${username}" href="#">x</a><a id="prev" class="arrows" href="#" data-arrow="prev"><</a><a class="arrows" id="next" href="#" data-arrow="next">></a><img src="${image}" alt="profile image"><h3 class="capitalize">${name}</h3><p>${email}</p><p class="capitalize">${city}</p><div class="line-break"></div><p>${username}</p><p>${cell}</p><p class="capitalize">${fullAddress}</p><p>${birthday}</p></div></div>`;
         employeeList += employeeModal;
         //append them to the page
         $('#list').append(employeeList);
@@ -95,4 +95,15 @@ $(document).ready(() => {
             findPerson();
         }
     });
+    
+    ///////////////////////////ARROW TO CHANGE MODALS///////////////////////////
+    //capture click event on the modal
+    $('body').on('click','#prev', (e) => {
+        $(e.target).closest('.modal').hide().prevAll('.modal:first').show();
+    });
+    
+    $('body').on('click','#next', (e) => {
+        $(e.target).closest('.modal').hide().nextAll('.modal:first').show();
+    });
+    
 });

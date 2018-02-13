@@ -130,3 +130,19 @@ body {
     color: black;
     font-size: x-large;
 }
+
+.arrows {
+    text-decoration: none;
+    color: black;
+    font-size: x-large;
+}
+
+#prev {
+    float: left;
+    margin-top: 50%;
+}
+
+#next{
+    float: right;
+    margin-top: 50%;
+}
