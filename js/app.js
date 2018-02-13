@@ -37,7 +37,7 @@ $(document).ready(() => {
       }
     });
     
-    /////////////////modal windows////////////////////////
+    /////////////////MODAL WINDOWS////////////////////////
     
     //on click of the li element
     $('body').on('click', '[data-modal-open]', (e) => {
@@ -67,4 +67,32 @@ $(document).ready(() => {
         e.preventDefault();
     });
     
+    ////////////////////SEARCH/////////////////
+    //Search through the students and find those that match the search
+    const findPerson = () => {
+        $('#none').hide();
+        //get the item that was searched
+        let searchItem = $('#search input').val();
+        //find all items that contain the searched item
+        let returnedItems = $(`li:contains('${searchItem}')`);
+        //return the search box value to empty
+        $('#search input').val('');
+        //return the results to create the page
+        $('.employee').hide();
+        if (returnedItems[0] === undefined) {
+            $('#list').append('<p id="none">No persons found.</p>');
+        } else {
+            returnedItems.show();
+        }
+    }
+    
+    $('#search button').click(() => {
+        findPerson();
+    });
+    
+    $('#search input').bind('keypress', (event) => {
+        if (event.keyCode === 13) {
+            findPerson();
+        }
+    });
 });

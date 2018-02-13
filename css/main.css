@@ -17,6 +17,19 @@ body {
     color: darkslategray;
     margin-left: 4rem;
     margin-top: 2rem;
+    display: inline-block;
+}
+
+#search {
+    float: right;
+    margin-top: 2rem;
+    margin-right: 3rem;
+}
+
+@media (min-width: 992px) {
+    #search {
+        margin-right: 13rem;
+    }
 }
 
 #employeeList {
