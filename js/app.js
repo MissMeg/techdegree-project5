@@ -1,12 +1,4 @@
 $(document).ready(() => {
-    //Image: data.results[0].picture.large
-    //Name: First - data.results[0].name.first | Last - data.results[0].name.last
-    //Email: data.results[0].email
-    //City: data.results[0].location.city
-    //Username: data.results[0].login.username
-    //Cell Number: data.results[0].phone
-    //Full Address: Street - data.results[0].location.street | City - data.results[0].location.city | State/Country - data.results[0].location.state | Zip - data.results[0].location.postcode
-    //Birthday: data.results[0].dob
     
     //Rearrange the received dob to mm/dd/yyy
     const birthdayCorrection = (birthday) => {
@@ -16,7 +8,7 @@ $(document).ready(() => {
     
     //Employee Info Div
     const employeeData = (data) => {
-        //data.results[0]
+        //data.results[0] - set variable for the needed information
         let image = data.picture.large;
         let name = `${data.name.first} ${data.name.last}`;
         let email = data.email;
@@ -25,19 +17,54 @@ $(document).ready(() => {
         let cell = data.phone;
         let fullAddress = `${data.location.street}, ${city}, ${data.location.state} ${data.location.postcode}`;
         let birthday = birthdayCorrection(data.dob);
-        let employeeList = `<li><img src="${image}" alt="profile image"><h1 class="capital">${name}</h1><p>${email}</p><p class="capitalize">${city}</p></li>`;
+        //build the list items and the modal window divs
+        let employeeList = `<li class="employee"><a data-modal-open="${username}" href="#"><div class="images"><img src="${image}" alt="profile image"></div><div class="content"><h3 class="capitalize">${name}</h3><p>${email}</p><p class="capitalize">${city}</p></div></a></li>`;
+        let employeeModal = `<div class="modal" data-modal="${username}"><div class="modal-content"><a class="modal-close" data-modal-close="${username}" href="#">x</a><img src="${image}" alt="profile image"><h3 class="capitalize">${name}</h3><p>${email}</p><p class="capitalize">${city}</p><div class="line-break"></div><p>${username}</p><p>${cell}</p><p class="capitalize">${fullAddress}</p><p>${birthday}</p></div></div>`;
+        employeeList += employeeModal;
+        //append them to the page
         $('#list').append(employeeList);
     }
     
+    //call a request to receive 12 fake employees for the mockup
     $.ajax({
       url: 'https://randomuser.me/api/?nat=us&results=12',
       dataType: 'json',
       success: function(data) {
-          console.log(data.results[0]);
+          //interate through the data received to build out the page
           for( let i = 0; i < data.results.length; i++) {
               employeeData(data.results[i]);
           }
       }
+    });
+    
+    /////////////////modal windows////////////////////////
+    
+    //on click of the li element
+    $('body').on('click', '[data-modal-open]', (e) => {
+        //grab the username of the li's employee
+        let target = $(e.currentTarget).attr('data-modal-open');
+        //show matching modal window
+        $(`[data-modal="${target}"]`).show();
+    });
+    
+    //on click of the modal X close button
+    $('body').on('click', '[data-modal-close]', (e) => {
+        //grab the username of the modals' employee
+        let target = $(e.target).attr('data-modal-close');
+        //hide matching modal window
+        $(`[data-modal="${target}"]`).hide();
+        //prevent default click events
+        e.preventDefault();
+    });
+    
+    //on click outside of the modal - hide the currently open modal
+    $('body').on('click', '.modal', (e) => {
+        //grab the username of the modals' employee
+        let target = $(e.target).find('a').attr('data-modal-close');
+        //hide matching modal window
+        $(`[data-modal="${target}"]`).hide();
+        //prevent default click events
+        e.preventDefault();
     });
     
 });
